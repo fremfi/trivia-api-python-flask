@@ -271,7 +271,7 @@ POST '/api/quizzes'
 
 ```
 {
-	"success": true,
+    "success": true,
 }
 ```
 
