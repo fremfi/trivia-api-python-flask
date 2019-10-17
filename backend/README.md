@@ -52,25 +52,77 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
-Endpoints
-GET '/categories'
-GET ...
-POST ...
-DELETE ...
-
+## Endpoints
+```
 GET 'api/categories'
+GET '/api/categories/<int:category_id>/questions'
+GET 'api/questions'
+POST 'api/questions'
+DELETE '/api/questions/<int:question_id>'
+POST '/api/quizzes'
+```
+
+### GET 'api/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with the key categories, that contains a object of id: category_string key:value pairs and success as true. 
 
-success: "True",
-categories: {'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
+{
+  "categories": [
+    {
+      "id": 1,
+      "type": "Science"
+    },
+    {
+      "id": 2,
+      "type": "Art"
+    },
+    {
+      "id": 3,
+      "type": "Geography"
+    },
+    {
+      "id": 4,
+      "type": "History"
+    },
+    {
+      "id": 5,
+      "type": "Entertainment"
+    },
+    {
+      "id": 6,
+      "type": "Sports"
+    }
+  ],
+  "success": true
+}
 
+### GET '/api/categories/<int:category_id>/questions'
+- Fetches a dictionary of questions by Category ID
+- Request Arguments: Category ID
+- Returns: An object with the key success, questions, total_questions, current_category
+
+{
+  "current_category": 5,
+  "questions": [
+    {
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }
+  ],
+  "success": true,
+  "total_questions": 3
+}
 
 ## Testing
 ```
