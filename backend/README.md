@@ -63,10 +63,11 @@ POST '/api/quizzes'
 ```
 
 ### GET 'api/categories'
-- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Fetches an array of categories
 - Request Arguments: None
-- Returns: An object with the key categories, that contains a object of id: category_string key:value pairs and success as true. 
+- Returns: An object with the key categories and success 
 
+```
 {
   "categories": [
     {
@@ -96,12 +97,14 @@ POST '/api/quizzes'
   ],
   "success": true
 }
+```
 
 ### GET '/api/categories/<int:category_id>/questions'
-- Fetches a dictionary of questions by Category ID
+- Fetches an array of questions by Category ID
 - Request Arguments: Category ID
-- Returns: An object with the key success, questions, total_questions, current_category
+- Returns: An object with the keys success, questions, total_questions, current_category
 
+```
 {
   "current_category": 5,
   "questions": [
@@ -123,6 +126,181 @@ POST '/api/quizzes'
   "success": true,
   "total_questions": 3
 }
+```
+
+### GET 'api/questions'
+- Fetches an array of upto 10 questions
+- Request Parameter: page ie. 'api/questions?page=2'
+- Returns: An object with the keys categories, current_category, questions, total_questions and success
+
+```
+{
+  "categories": [
+    {
+      "id": 1,
+      "type": "Science"
+    },
+    {
+      "id": 2,
+      "type": "Art"
+    },
+    {
+      "id": 3,
+      "type": "Geography"
+    },
+    {
+      "id": 4,
+      "type": "History"
+    },
+    {
+      "id": 5,
+      "type": "Entertainment"
+    },
+    {
+      "id": 6,
+      "type": "Sports"
+    }
+  ],
+  "current_category": "",
+  "questions": [
+    {
+      "answer": "Muhammad Ali",
+      "category": 4,
+      "difficulty": 1,
+      "id": 9,
+      "question": "What boxer's original name is Cassius Clay?"
+    },
+    {
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    },
+    {
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    },
+    {
+      "answer": "Brazil",
+      "category": 6,
+      "difficulty": 3,
+      "id": 10,
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    },
+    {
+      "answer": "Uruguay",
+      "category": 6,
+      "difficulty": 4,
+      "id": 11,
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    },
+    {
+      "answer": "George Washington Carver",
+      "category": 4,
+      "difficulty": 2,
+      "id": 12,
+      "question": "Who invented Peanut Butter?"
+    },
+    {
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
+      "question": "What is the largest lake in Africa?"
+    },
+    {
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    },
+    {
+      "answer": "Agra",
+      "category": 3,
+      "difficulty": 2,
+      "id": 15,
+      "question": "The Taj Mahal is located in which Indian city?"
+    }
+  ],
+  "success": true,
+  "total_questions": 22
+}
+```
+
+### POST 'api/questions'
+- Creates a new question
+- Request Arguments: An object with the keys questions, answer, difficulty and category
+```
+{
+	"question": "How many championships does the Lakers have?",
+	"answer": "5",
+	"difficulty": 1,
+	"category": "4"
+}
+```
+- Returns: An object with the keys question and success
+```
+{
+	"success": true,
+    "question": {
+        "id": 2
+        "question": "How many championships does the Lakers have?",
+        "answer": "5",
+        "difficulty": 1,
+        "category": "4"
+    }
+}
+```
+
+### DELETE '/api/questions/<int:question_id>'
+- Deletes a question by id
+- Request Parameter: Question ID
+- Returns: An object with the key success
+
+```
+{
+	"success": true,
+}
+```
+
+### POST '/api/quizzes'
+- Fetches the next question for the quiz
+- Request Arguments: An object with the keys previous_questions and quiz_category
+
+```
+{
+    "previous_questions": [5, 9, 12, 23],
+    "quiz_category": {
+        "type": "Sports",
+        "id": 4
+    }
+}
+```
+- Returns: An object with the keys question and success
+```
+{
+	"success": true,
+    "question": {
+        "id": 2
+        "question": "How many championships does the Lakers have?",
+        "answer": "5",
+        "difficulty": 1,
+        "category": "4"
+    }
+}
+```
 
 ## Testing
 ```
