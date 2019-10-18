@@ -20,7 +20,7 @@ def create_app(test_config=None):
     @app.after_request
     def after_request(response):
         response.headers.add('Access-Control-Allow-Headers',
-                              'Content-Type, Authorization')
+                             'Content-Type, Authorization')
         return response
 
     @app.route('/api/categories', methods=['GET'])
@@ -106,7 +106,9 @@ def create_app(test_config=None):
         if search_term:
             if not isinstance(search_term, str):
                 abort(404)
-            questions = (Question.query.filter(Question.question.ilike(f'%{search_term}%')).all())
+            questions = (Question.query.
+                         filter(Question.question.
+                                ilike('%'+search_term+'%')).all())
             formatted_questions = [question.format() for question in questions]
             return jsonify({
               "success": True,
@@ -142,7 +144,8 @@ def create_app(test_config=None):
         Returns:
             returns an array of questions by category
         """
-        questions = Question.query.filter(Question.category == category_id).all()
+        questions = (Question.query.
+                     filter(Question.category == category_id).all())
         formatted_questions = [question.format() for question in questions]
 
         if not len(questions):
@@ -158,7 +161,7 @@ def create_app(test_config=None):
     @app.route('/api/quizzes', methods=['POST'])
     def get_quiz_next_question():
         """
-        get_quiz_next_question: fetches the next random trivia question in a quiz
+        get_quiz_next_question: fetches the next random question in a quiz
         Args:
             previous_questions (data type: list): list of previous question ids
             quiz_category (data type: obj): category type and id
@@ -177,19 +180,29 @@ def create_app(test_config=None):
         except (KeyError, ValueError):
             abort(400)
 
-        if not isinstance(previous_questions, list) and all(isinstance(previous_question, int) for previous_question in previous_questions):
+        if (not isinstance(previous_questions, list) and
+                all(isinstance(previous_question, int) for
+                    previous_question in previous_questions)):
             abort(400)
 
         if len(previous_questions) > 0:
             if quiz_category_id is 0:  # query all categories
-                next_question = Question.query.filter(~Question.id.in_(previous_questions)).order_by(func.random()).first_or_404()
+                next_question = (Question.query.
+                                 filter(~Question.id.in_(previous_questions)).
+                                 order_by(func.random()).first_or_404())
             else:
-                next_question = Question.query.filter(Question.category == quiz_category_id, ~Question.id.in_(previous_questions)).order_by(func.random()).first_or_404()
+                next_question = (Question.query.
+                                 filter(Question.category == quiz_category_id,
+                                        ~Question.id.in_(previous_questions)).
+                                 order_by(func.random()).first_or_404())
         else:
             if quiz_category_id is 0:  # query all categories
-                next_question = Question.query.order_by(func.random()).first_or_404()
+                next_question = (Question.query.
+                                 order_by(func.random()).first_or_404())
             else:
-                next_question = Question.query.filter(Question.category == quiz_category_id).order_by(func.random()).first_or_404()
+                next_question = (Question.query.
+                                 filter(Question.category == quiz_category_id).
+                                 order_by(func.random()).first_or_404())
 
         return jsonify({
           "success": True,
