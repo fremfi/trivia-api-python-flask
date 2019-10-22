@@ -1,6 +1,6 @@
 # Trivia Game Full Stack API
 
-## Full Stack Nano - API Project
+## Udacity Full Stack Nanodegree - API Project
 
 1) Displays questions - both all questions and by category. Questions should show the question, category and difficulty rating by default and can show/hide the answer. 
 2) Delete questions.
